@@ -9,6 +9,10 @@ var titleRegex = /(.*?) \((.*?)\)/;
 var seenEvents = [];
 var firstRun = true;
 
+process.on('uncaughtException', function (exception) {
+    console.log(exception);
+});
+
 function check(done) {
     console.log("Checking...");
     request('https://www.registermychapter.com/tsa/nat/results.aspx', function (error, response, body) {
