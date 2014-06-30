@@ -1,0 +1,10 @@
+{
+  "name": "TSA-Results-Monitor",
+  "main": "index.js",
+  "dependencies": {
+    "cheerio": "~0.17.0",
+    "voice.js": "~0.1.4-b",
+    "request": "~2.36.0"
+  },
+  "author": "Zachary Liu"
+}
