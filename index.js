@@ -1,9 +1,13 @@
 var cheerio = require('cheerio');
 var request = require('request');
 
+var sms = require('./sms');
+var config = require('./config.js');
+
 var titleRegex = /(.*?) \((.*?)\)/;
 
 var seenEvents = [];
+var firstRun = true;
 
 function check(done) {
     console.log("Checking...");
@@ -11,6 +15,7 @@ function check(done) {
         if (!error && response.statusCode == 200) {
             var $ = cheerio.load(body);
             var events = $('#TR table');
+            console.log("Found", events.length, "total events");
             for (var i = 0; i < events.length; i++) {
                 var fullTitle = events.eq(i).find('tr:first-child th').html();
                 var match = titleRegex.exec(fullTitle);
@@ -35,12 +40,25 @@ function check(done) {
 
                         console.log(message);
 
+                        if (!firstRun) {
+                            sms.sms(config.NUMBER, message, function () {
+                                console.log("Message sent");
+                            });
+                        }
+
                         if (done) done();
                     }
                 }
             }
+            firstRun = false;
         }
     });
 }
 
-check();
+sms.init(function(err) {
+    if (!err) {
+        console.log("Starting poll loop");
+        check();
+        setInterval(check, 30000);
+    }
+});
