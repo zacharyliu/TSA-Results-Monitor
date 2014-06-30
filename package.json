@@ -3,7 +3,7 @@
   "main": "index.js",
   "dependencies": {
     "cheerio": "~0.17.0",
-    "voice.js": "~0.1.4-b",
+    "voice.js": "git+https://github.com/zacharyliu/voice.js.git",
     "request": "~2.36.0"
   },
   "author": "Zachary Liu"
